@@ -8,11 +8,14 @@
     </appender>
 
     <!-- Log file for Controller -->
-    <appender name="CONTROLLER_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <appender name="CONTROLLER_LOG" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <append>true</append>
         <file>logs/controller.log</file>
-        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>logs/controller.%d{yyyy-MM-dd}.log</fileNamePattern>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>logs/archive/controller.%d{yyyy-MM-dd}.%i.log</fileNamePattern>
             <maxHistory>30</maxHistory>
+            <totalSizeCap>100MB</totalSizeCap>
+            <maxFileSize>10MB</maxFileSize>
         </rollingPolicy>
         <encoder>
             <pattern>%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n</pattern>
@@ -20,26 +23,44 @@
     </appender>
 
     <!-- Log file for Service -->
-    <appender name="SERVICE_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <appender name="SERVICE_LOG" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <append>true</append>
         <file>logs/service.log</file>
-        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>logs/service.%d{yyyy-MM-dd}.log</fileNamePattern>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>logs/archive/service.%d{yyyy-MM-dd}.%i.log</fileNamePattern>
             <maxHistory>30</maxHistory>
+            <totalSizeCap>100MB</totalSizeCap>
+            <maxFileSize>10MB</maxFileSize>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n</pattern>
+        </encoder>
+    </appender>
+    <appender name="AUTHENTICATION_FILTER_LOGGER" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <append>true</append>
+        <file>logs/AuthenticationFilter.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>logs/archive/authenticationFilter.%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <maxHistory>30</maxHistory>
+            <totalSizeCap>100MB</totalSizeCap>
+            <maxFileSize>10MB</maxFileSize>
         </rollingPolicy>
         <encoder>
             <pattern>%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n</pattern>
         </encoder>
     </appender>
 
+
     <!-- Loggers -->
-    <logger name="com.example.controller" level="DEBUG" additivity="false">
-        <appender-ref ref="CONTROLLER_FILE" />
-        <appender-ref ref="CONSOLE" />
+    <logger name="dev.oskarjohansson.projektarbetev2.controller" level="DEBUG" additivity="false">
+        <appender-ref ref="CONTROLLER_LOG" />
     </logger>
 
-    <logger name="com.example.service" level="DEBUG" additivity="false">
-        <appender-ref ref="SERVICE_FILE" />
-        <appender-ref ref="CONSOLE" />
+    <logger name="dev.oskarjohansson.projektarbetev2.service" level="DEBUG" additivity="false">
+        <appender-ref ref="SERVICE_LOG" />
+    </logger>
+    <logger name="dev.oskarjohansson.projektarbetev2.configuration.CustomFilters" level="DEBUG" additivity="false">
+        <appender-ref ref="AUTHENTICATION_FILTER_LOGGER" />
     </logger>
 
     <!-- Root logger -->

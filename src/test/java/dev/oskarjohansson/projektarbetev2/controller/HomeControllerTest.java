@@ -4,6 +4,8 @@ import dev.oskarjohansson.projektarbetev2.configuration.SecurityConfiguration;
 import dev.oskarjohansson.projektarbetev2.service.MyUserDetailService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.junit.platform.commons.logging.Logger;
+import org.junit.platform.commons.logging.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -23,6 +25,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @Import(SecurityConfiguration.class)
 class HomeControllerTest {
 
+    private static final Logger LOG = LoggerFactory.getLogger(HomeControllerTest.class);
+
 
     @Autowired
     MockMvc client;
@@ -41,6 +45,7 @@ class HomeControllerTest {
 
        MvcResult response = client.perform(get("/"))
                 .andExpect(status().isOk()).andReturn();
+
        String msg = response.getResponse().getContentAsString();
         Assertions.assertEquals(msg, "Hello, Guest");
     }
@@ -52,6 +57,7 @@ class HomeControllerTest {
         MvcResult response = client.perform(get("/"))
                 .andExpect(status().isOk()).andReturn();
         String msg = response.getResponse().getContentAsString();
+
         Assertions.assertEquals(msg, "Hello, User");
     }
 
@@ -68,5 +74,14 @@ class HomeControllerTest {
         MvcResult response = client.perform(get("/user")).andExpect(status().isOk()).andReturn();
         String msg = response.getResponse().getContentAsString();
         Assertions.assertEquals(msg, "Hello, User");
+    }
+
+    @Test
+    @WithMockUser(username = "Admin", authorities = "SCOPE_ROLE_ADMIN")
+    void testGetAdminWithAuthorisedUserAndAssert200AndMessageHelloUser() throws Exception{
+        MvcResult response = client.perform(get("/admin")).andExpect(status().isOk()).andReturn();
+        String msg = response.getResponse().getContentAsString();
+        Assertions.assertEquals(msg, "Hello, Admin");
+
     }
 }

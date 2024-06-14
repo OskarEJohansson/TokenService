@@ -27,6 +27,8 @@ public class HomeController {
     @GetMapping("/")
     public String home(Principal principal) {
 
+        LOG.info("Logging principal{}", principal.getName());
+
         if (principal != null) {
             return "Hello, " + principal.getName();
         } else {
@@ -37,13 +39,16 @@ public class HomeController {
     @Secured(value = "SCOPE_ROLE_USER")
     @GetMapping("/user")
     public String user(Principal principal){
+
+        LOG.info("Running get/user");
         return "Hello, " + principal.getName();
     }
 
     @Secured(value = "SCOPE_ROLE_ADMIN")
     @GetMapping("/admin")
-    public String admin() {
-        return "Hello, ADMIN";
+    public String admin(Principal principal) {
+        LOG.debug("DEBUG, Running get/admin, principal: {}", principal.getName());
+        return "Hello, " + principal.getName();
     }
 
     @GetMapping("/users")
