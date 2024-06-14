@@ -1,5 +1,0 @@
-2024-06-14 15:31:56 [main] INFO  d.o.p.controller.HomeControllerTest - Starting HomeControllerTest using Java 22.0.1 with PID 34877 (started by oskarjohansson in /Users/oskarjohansson/Projects/Java 2024/ProjektarbeteV2/ProjektarbeteV2)
-2024-06-14 15:31:56 [main] DEBUG d.o.p.controller.HomeControllerTest - Running with Spring Boot v3.3.0, Spring v6.1.8
-2024-06-14 15:31:56 [main] INFO  d.o.p.controller.HomeControllerTest - No active profile set, falling back to 1 default profile: "default"
-2024-06-14 15:31:57 [main] INFO  d.o.p.controller.HomeControllerTest - Started HomeControllerTest in 1.601 seconds (process running for 2.114)
-2024-06-14 15:31:57 [main] INFO  d.o.p.controller.HomeController - Running get/user
