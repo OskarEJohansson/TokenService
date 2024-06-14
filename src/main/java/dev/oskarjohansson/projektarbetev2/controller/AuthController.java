@@ -34,6 +34,7 @@ public class AuthController {
                         userLogin.username(),
                         userLogin.password()));
 
+
         LOG.debug("Token requested for user '{}'", auth.getName());
         LOG.debug("Token granted {}", auth);
         LOG.debug(auth.toString());
