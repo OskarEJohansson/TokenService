@@ -16,7 +16,6 @@ import java.util.List;
 
 
 @RestController
-@EnableMethodSecurity
 public class HomeController {
 
     private final Logger LOG = LoggerFactory.getLogger(HomeController.class);
@@ -27,16 +26,14 @@ public class HomeController {
     @GetMapping("/")
     public String home(Principal principal) {
 
-        LOG.info("Logging principal{}", principal.getName());
-
         if (principal != null) {
+            LOG.info("Logging principal{}", principal.getName());
             return "Hello, " + principal.getName();
         } else {
             return "Hello, Guest";
         }
     }
 
-    @Secured(value = "SCOPE_ROLE_USER")
     @GetMapping("/user")
     public String user(Principal principal){
 
@@ -44,7 +41,6 @@ public class HomeController {
         return "Hello, " + principal.getName();
     }
 
-    @Secured(value = "SCOPE_ROLE_ADMIN")
     @GetMapping("/admin")
     public String admin(Principal principal) {
         LOG.debug("DEBUG, Running get/admin, principal: {}", principal.getName());

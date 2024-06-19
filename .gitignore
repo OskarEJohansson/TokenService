@@ -34,5 +34,7 @@ build/
 .vscode/
 
 /logs
-/src/main/resources/
+/src/main/resources/logback.xml
+/src/main/resources/secrets.properties
+
 

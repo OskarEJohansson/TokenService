@@ -1,6 +1,8 @@
 package dev.oskarjohansson.projektarbetev2.service;
 
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.oauth2.jwt.JwtClaimsSet;
@@ -14,6 +16,8 @@ import java.util.stream.Collectors;
 
 @Service
 public class TokenService {
+
+    private static final Logger LOG = LoggerFactory.getLogger(TokenService.class);
 
     private final JwtEncoder encoder;
 
@@ -35,6 +39,8 @@ public class TokenService {
                 .subject(authentication.getName())
                 .claim("scope", scope)
                 .build();
+
+        LOG.info("New token generated for user {}, at time {}. with authorities {}", authentication.getName(), now, authentication.getAuthorities());
 
         return this.encoder.encode(JwtEncoderParameters.from(claims)).getTokenValue();
     }

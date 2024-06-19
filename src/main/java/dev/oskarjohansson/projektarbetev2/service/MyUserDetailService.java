@@ -37,6 +37,7 @@ public class MyUserDetailService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
+        LOG.debug("Logging username when loading user: {}", username);
         Optional<MyUser> user = userRepository.findByUsername(username);
         if (user.isPresent()) {
             var userObj = user.get();
@@ -57,6 +58,7 @@ public class MyUserDetailService implements UserDetailsService {
             String encodedPassword = securityConfiguration.passwordEncoder().encode(user.password());
             MyUser newUser = new MyUser(null, user.username(), encodedPassword, user.role());
 
+            LOG.info("New user saved with email address: {}", user.username());
             return ResponseEntity.ok(userRepository.save(newUser));
 
         } catch (DuplicateKeyException e) {

@@ -25,7 +25,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @Import(SecurityConfiguration.class)
 class HomeControllerTest {
 
-    private static final Logger LOG = LoggerFactory.getLogger(HomeControllerTest.class);
 
 
     @Autowired
