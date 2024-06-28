@@ -24,11 +24,11 @@ public class MyUserDetailService implements UserDetailsService {
 
     private final static Logger LOG = LoggerFactory.getLogger(MyUserDetailService.class);
 
-    private UserRepository userRepository;
+    private RepositoryService repositoryService;
     private SecurityConfiguration securityConfiguration;
 
-    public MyUserDetailService(UserRepository userRepository, SecurityConfiguration securityConfiguration){
-        this.userRepository = userRepository;
+    public MyUserDetailService(RepositoryService repositoryService, SecurityConfiguration securityConfiguration){
+        this.repositoryService = repositoryService;
         this.securityConfiguration = securityConfiguration;
 
     }
@@ -38,7 +38,7 @@ public class MyUserDetailService implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
         LOG.debug("Logging username when loading user: {}", username);
-        Optional<MyUser> user = userRepository.findByUsername(username);
+        Optional<MyUser> user = repositoryService.getUserFromUserRepository(username);
         if (user.isPresent()) {
             var userObj = user.get();
             GrantedAuthority authority = new SimpleGrantedAuthority(userObj.role().getAuthority());
@@ -59,7 +59,7 @@ public class MyUserDetailService implements UserDetailsService {
             MyUser newUser = new MyUser(null, user.username(), encodedPassword, user.role());
 
             LOG.info("New user saved with email address: {}", user.username());
-            return ResponseEntity.ok(userRepository.save(newUser));
+            return ResponseEntity.ok(repositoryService.saveUserToUserRepository(newUser));
 
         } catch (DuplicateKeyException e) {
             e.printStackTrace();
@@ -74,7 +74,7 @@ public class MyUserDetailService implements UserDetailsService {
     }
 
     public List<MyUser> getUsers(){
-        return userRepository.findAll();
+        return repositoryService.getAllUsersFromUserRepository();
     }
 
 
