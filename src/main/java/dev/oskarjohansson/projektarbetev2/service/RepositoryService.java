@@ -10,21 +10,21 @@ import java.util.Optional;
 @Service
 public class RepositoryService {
 
-    UserRepository userRepository;
+    private final UserRepository userRepository;
 
     public RepositoryService(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 
-    public Optional<MyUser> getUserFromUserRepository(String username) {
+    public Optional<MyUser> getUserByUsername(String username) {
         return userRepository.findByUsername(username);
     }
 
-    public MyUser saveUserToUserRepository(MyUser user){
+    public MyUser saveUser(MyUser user){
         return userRepository.save(user);
     }
 
-    public List<MyUser> getAllUsersFromUserRepository(){
+    public List<MyUser> getAllUsers(){
 
         return userRepository.findAll();
 

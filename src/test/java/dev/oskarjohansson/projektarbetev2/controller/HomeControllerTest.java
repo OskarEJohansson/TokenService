@@ -4,8 +4,6 @@ import dev.oskarjohansson.projektarbetev2.configuration.SecurityConfiguration;
 import dev.oskarjohansson.projektarbetev2.service.MyUserDetailService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.junit.platform.commons.logging.Logger;
-import org.junit.platform.commons.logging.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -24,8 +22,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebMvcTest(HomeController.class)
 @Import(SecurityConfiguration.class)
 class HomeControllerTest {
-
-
 
     @Autowired
     MockMvc client;

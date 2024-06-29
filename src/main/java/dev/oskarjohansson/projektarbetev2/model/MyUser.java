@@ -1,10 +1,10 @@
 package dev.oskarjohansson.projektarbetev2.model;
 
 
-import jakarta.validation.constraints.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.MongoId;
-import org.springframework.stereotype.Service;
 
 
 @Document

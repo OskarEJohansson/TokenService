@@ -3,7 +3,6 @@ package dev.oskarjohansson.projektarbetev2.service;
 import com.mongodb.DuplicateKeyException;
 import dev.oskarjohansson.projektarbetev2.configuration.SecurityConfiguration;
 import dev.oskarjohansson.projektarbetev2.model.MyUser;
-import dev.oskarjohansson.projektarbetev2.repository.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -38,7 +37,7 @@ public class MyUserDetailService implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
         LOG.debug("Logging username when loading user: {}", username);
-        Optional<MyUser> user = repositoryService.getUserFromUserRepository(username);
+        Optional<MyUser> user = repositoryService.getUserByUsername(username);
         if (user.isPresent()) {
             var userObj = user.get();
             GrantedAuthority authority = new SimpleGrantedAuthority(userObj.role().getAuthority());
@@ -59,22 +58,23 @@ public class MyUserDetailService implements UserDetailsService {
             MyUser newUser = new MyUser(null, user.username(), encodedPassword, user.role());
 
             LOG.info("New user saved with email address: {}", user.username());
-            return ResponseEntity.ok(repositoryService.saveUserToUserRepository(newUser));
+            return ResponseEntity.ok(repositoryService.saveUser(newUser));
 
         } catch (DuplicateKeyException e) {
             e.printStackTrace();
-
+            LOG.error("Duplicate key exception", e);
             return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getCause());
         } catch (Exception ex) {
             ex.printStackTrace();
 
+            LOG.error("An error occurred", ex);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ex.getCause());
         }
 
     }
 
     public List<MyUser> getUsers(){
-        return repositoryService.getAllUsersFromUserRepository();
+        return repositoryService.getAllUsers();
     }
 
 
