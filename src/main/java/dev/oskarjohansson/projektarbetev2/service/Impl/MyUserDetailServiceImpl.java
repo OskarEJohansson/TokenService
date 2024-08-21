@@ -3,6 +3,7 @@ package dev.oskarjohansson.projektarbetev2.service.Impl;
 import com.mongodb.DuplicateKeyException;
 import dev.oskarjohansson.projektarbetev2.configuration.SecurityConfiguration;
 import dev.oskarjohansson.projektarbetev2.model.MyUser;
+import dev.oskarjohansson.projektarbetev2.model.RegisterRequest;
 import dev.oskarjohansson.projektarbetev2.model.UserConsent;
 import dev.oskarjohansson.projektarbetev2.service.ConsentService;
 import dev.oskarjohansson.projektarbetev2.service.MyUserDetailService;
@@ -57,15 +58,15 @@ public class MyUserDetailServiceImpl implements MyUserDetailService {
         }
     }
 
-    public ResponseEntity<?> saveUser(MyUser user, boolean consent) {
+    public ResponseEntity<?> saveUser(RegisterRequest request) {
         try {
-            String encodedPassword = securityConfiguration.passwordEncoder().encode(user.password());
+            String encodedPassword = securityConfiguration.passwordEncoder().encode(request.password());
 
-            UserConsent userConsent = consentService.consentToTermsAndAgreement(consent, user);
+            UserConsent userConsent = consentService.consentToTermsAndAgreement(request);
 
-            MyUser newUser = new MyUser(null, user.username(), encodedPassword, user.role(), userConsent);
+            MyUser newUser = new MyUser(null, request.username(), encodedPassword, null, userConsent);
 
-            LOG.info("New user saved with email address: {}", user.username());
+            LOG.info("New user saved with email address: {}", request.username());
             return ResponseEntity.ok(repositoryService.saveUser(newUser));
 
         } catch (DuplicateKeyException e) {
