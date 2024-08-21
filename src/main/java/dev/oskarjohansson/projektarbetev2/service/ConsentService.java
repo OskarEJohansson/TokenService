@@ -1,7 +1,11 @@
 package dev.oskarjohansson.projektarbetev2.service;
 
+import dev.oskarjohansson.projektarbetev2.model.MyUser;
+import dev.oskarjohansson.projektarbetev2.model.UserConsent;
 import org.springframework.stereotype.Service;
 
-@Service
-public class ConsentService {
+
+public interface ConsentService {
+
+    public UserConsent consentToTermsAndAgreement(Boolean userConsent, MyUser user);
 }

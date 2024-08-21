@@ -13,14 +13,12 @@ import org.springframework.test.web.servlet.MvcResult;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-
 @SpringBootTest
 @AutoConfigureMockMvc
 class AuthControllerTest {
 
     @Autowired
     private MockMvc mvc;
-
 
     @BeforeEach
     void setUp() {

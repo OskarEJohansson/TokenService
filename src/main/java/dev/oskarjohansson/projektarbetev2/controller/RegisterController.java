@@ -16,25 +16,23 @@ import org.springframework.web.bind.annotation.RestController;
 @Validated
 public class RegisterController {
 
-
-    private MyUserDetailService myUserDetailService;
+    private final MyUserDetailService myUserDetailService;
 
     public RegisterController(MyUserDetailService myUserDetailService) {
         this.myUserDetailService = myUserDetailService;
     }
 
     @PostMapping("/register")
-    public ResponseEntity<?> registerUser(@RequestBody @Valid MyUser user) {
+    public ResponseEntity<?> registerUser(@RequestBody @Valid MyUser user, boolean consent) {
 
         try {
-            ResponseEntity response = myUserDetailService.saveUser(user);
+            ResponseEntity response = myUserDetailService.saveUser(user, consent);
             return ResponseEntity.ok(response);
 
         } catch (Exception e) {
             e.printStackTrace();
 
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
-
         }
     }
 }

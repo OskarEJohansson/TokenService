@@ -20,8 +20,11 @@ public class HomeController {
 
     private final Logger LOG = LoggerFactory.getLogger(HomeController.class);
 
-    @Autowired
     private MyUserDetailService userDetailService;
+
+    public HomeController(MyUserDetailService userDetailService) {
+        this.userDetailService = userDetailService;
+    }
 
     @GetMapping("/")
     public String home(Principal principal) {
@@ -36,7 +39,6 @@ public class HomeController {
 
     @GetMapping("/user")
     public String user(Principal principal){
-
         LOG.info("Running get/user");
         return "Hello, " + principal.getName();
     }

@@ -49,7 +49,7 @@ public class AuthController {
             return  ResponseEntity.ok(token);
 
         } catch (AuthenticationException e){
-            LOG.debug("Autentication error, stack trace: {}", e.getStackTrace().toString());
+            LOG.debug("Authentication error, stack trace: {}", e.getStackTrace().toString());
 
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
 
