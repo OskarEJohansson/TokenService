@@ -1,9 +1,12 @@
 package dev.oskarjohansson.projektarbetev2.controller;
 
+import com.mongodb.DuplicateKeyException;
 import dev.oskarjohansson.projektarbetev2.model.MyUser;
 import dev.oskarjohansson.projektarbetev2.model.RegisterRequest;
 import dev.oskarjohansson.projektarbetev2.service.MyUserDetailService;
 import jakarta.validation.Valid;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Validated
 public class RegisterController {
 
+    private static final Logger LOG = LoggerFactory.getLogger(RegisterController.class);
     private final MyUserDetailService myUserDetailService;
 
     public RegisterController(MyUserDetailService myUserDetailService) {
@@ -26,15 +30,15 @@ public class RegisterController {
 
     @PostMapping("/register")
     public ResponseEntity<?> registerUser(@RequestBody @Validated RegisterRequest request) {
-
         try {
-            ResponseEntity response = myUserDetailService.saveUser(request);
+            MyUser response = myUserDetailService.saveUser(request);
             return ResponseEntity.ok(response);
-
-        } catch (Exception e) {
-            e.printStackTrace();
-
+        } catch (DuplicateKeyException e) {
+            LOG.error("Duplicate key exception", e);
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        } catch (Exception ex) {
+            LOG.error("An error occurred", ex);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
         }
     }
 }

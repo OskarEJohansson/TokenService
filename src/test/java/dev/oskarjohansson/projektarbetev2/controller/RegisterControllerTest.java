@@ -43,21 +43,21 @@ class RegisterControllerTest {
 
     @Test
     void registerUserWithNonValidPasswordLength() throws Exception {
-        String jsonRequest = "{\"username\":\"USER\", \"password\":\"1234\"}";
+        String jsonRequest = "{\"username\":\"USER\", \"password\":\"1234\", \"consent\":\"true\"}";
 
         client.perform(post("/register").contentType(MediaType.APPLICATION_JSON).content(jsonRequest)).andExpect(status().is4xxClientError()).andReturn();
     }
 
     @Test
     void registerUserWithNonValidUserLength() throws Exception {
-        String jsonRequest = "{\"username\":\"USE\", \"password\":\"1234\"}";
+        String jsonRequest = "{\"username\":\"USE\", \"password\":\"123456\", \"consent\":\"true\"}";
 
         client.perform(post("/register").contentType(MediaType.APPLICATION_JSON).content(jsonRequest)).andExpect(status().is4xxClientError());
     }
 
     @Test
     void testRegisterUserWithValidUsernameAndPassword() throws Exception {
-        String jsonRequest = "{\"username\":\"User\", \"password\":\"123456\"}";
+        String jsonRequest = "{\"username\":\"User\", \"password\":\"123456\", \"consent\":\"true\"}";
         client.perform(post("/register").contentType(MediaType.APPLICATION_JSON).content(jsonRequest)).andExpect(status().isOk());
     }
 

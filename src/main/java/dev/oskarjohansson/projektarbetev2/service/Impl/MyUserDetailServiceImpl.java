@@ -32,7 +32,7 @@ public class MyUserDetailServiceImpl implements MyUserDetailService {
     private final SecurityConfiguration securityConfiguration;
     private final ConsentService consentService;
 
-    public MyUserDetailServiceImpl(RepositoryService repositoryService, SecurityConfiguration securityConfiguration, ConsentService consentService){
+    public MyUserDetailServiceImpl(RepositoryService repositoryService, SecurityConfiguration securityConfiguration, ConsentService consentService) {
         this.repositoryService = repositoryService;
         this.securityConfiguration = securityConfiguration;
         this.consentService = consentService;
@@ -58,34 +58,29 @@ public class MyUserDetailServiceImpl implements MyUserDetailService {
         }
     }
 
-    public ResponseEntity<?> saveUser(RegisterRequest request) {
+    public MyUser saveUser(RegisterRequest request) throws Exception {
+
         try {
             String encodedPassword = securityConfiguration.passwordEncoder().encode(request.password());
-
-           UserConsent userConsent = consentService.consentToTermsAndAgreement(request);
+            UserConsent userConsent = consentService.consentToTermsAndAgreement(request);
 
             MyUser newUser = new MyUser(null, request.username(), encodedPassword, null, userConsent);
-
             LOG.info("New user saved with email address: {}", request.username());
-            return ResponseEntity.ok(repositoryService.saveUser(newUser));
+            return repositoryService.saveUser(newUser);
 
         } catch (DuplicateKeyException e) {
-            e.printStackTrace();
             LOG.error("Duplicate key exception", e);
-            return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getCause());
+            throw e;
         } catch (Exception ex) {
-            ex.printStackTrace();
-
             LOG.error("An error occurred", ex);
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ex.getCause());
+            throw ex;
         }
 
     }
 
-    public List<MyUser> getUsers(){
+    public List<MyUser> getUsers() {
         return repositoryService.getAllUsers();
     }
-
 
 
 }

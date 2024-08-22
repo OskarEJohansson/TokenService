@@ -11,12 +11,10 @@ import java.util.List;
 
 public interface MyUserDetailService extends UserDetailsService {
 
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException;
+    UserDetails loadUserByUsername(String username) throws UsernameNotFoundException;
 
-    public ResponseEntity<?> saveUser(RegisterRequest request);
+   MyUser saveUser(RegisterRequest request) throws Exception;
 
-    public List<MyUser> getUsers();
-
-
+    List<MyUser> getUsers();
 
 }
