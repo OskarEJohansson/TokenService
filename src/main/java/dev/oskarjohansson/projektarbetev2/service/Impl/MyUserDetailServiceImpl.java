@@ -62,7 +62,7 @@ public class MyUserDetailServiceImpl implements MyUserDetailService {
         try {
             String encodedPassword = securityConfiguration.passwordEncoder().encode(request.password());
 
-            UserConsent userConsent = consentService.consentToTermsAndAgreement(request);
+           UserConsent userConsent = consentService.consentToTermsAndAgreement(request);
 
             MyUser newUser = new MyUser(null, request.username(), encodedPassword, null, userConsent);
 
