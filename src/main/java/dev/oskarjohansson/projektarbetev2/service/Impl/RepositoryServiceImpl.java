@@ -1,5 +1,6 @@
 package dev.oskarjohansson.projektarbetev2.service.Impl;
 
+import com.mongodb.DuplicateKeyException;
 import dev.oskarjohansson.projektarbetev2.model.MyUser;
 import dev.oskarjohansson.projektarbetev2.repository.UserRepository;
 import dev.oskarjohansson.projektarbetev2.service.RepositoryService;
@@ -21,12 +22,11 @@ public class RepositoryServiceImpl implements RepositoryService {
         return userRepository.findByUsername(username);
     }
 
-    public MyUser saveUser(MyUser user){
-        return userRepository.save(user);
+    public MyUser saveUser(MyUser user)  {
+            return userRepository.save(user);
     }
 
-    public List<MyUser> getAllUsers(){
-
+    public List<MyUser> getAllUsers() {
         return userRepository.findAll();
     }
 }

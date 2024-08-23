@@ -33,7 +33,6 @@ public class AuthController {
     @PostMapping("/token")
     public ResponseEntity<?> token(@RequestBody @Valid LoginRequest userLogin) throws AuthenticationException {
 
-        try {
             LOG.debug("User login credentials {}", userLogin);
 
             Authentication auth = authenticationManager.authenticate(
@@ -41,18 +40,11 @@ public class AuthController {
                             userLogin.username(),
                             userLogin.password()));
 
-
             LOG.debug("Token requested for user '{}'", auth.getName());
             LOG.debug("Token granted {}", auth);
 
             String token = tokenService.generateToken(auth);
             return  ResponseEntity.ok(token);
 
-        } catch (AuthenticationException e){
-            LOG.debug("Authentication error, stack trace: {}", e.getStackTrace().toString());
-
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-
-        }
     }
 }

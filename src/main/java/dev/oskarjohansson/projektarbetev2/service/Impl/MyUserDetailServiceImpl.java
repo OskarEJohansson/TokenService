@@ -10,8 +10,7 @@ import dev.oskarjohansson.projektarbetev2.service.MyUserDetailService;
 import dev.oskarjohansson.projektarbetev2.service.RepositoryService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.dao.DataAccessException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
@@ -24,18 +23,16 @@ import java.util.Optional;
 
 
 @Service
-public class MyUserDetailServiceImpl implements MyUserDetailService {
+public class MyUserDetailServiceImpl extends MyUserDetailServiceUtilityImpl implements MyUserDetailService {
 
     private final static Logger LOG = LoggerFactory.getLogger(dev.oskarjohansson.projektarbetev2.service.Impl.MyUserDetailServiceImpl.class);
 
     private final RepositoryService repositoryService;
     private final SecurityConfiguration securityConfiguration;
-    private final ConsentService consentService;
 
-    public MyUserDetailServiceImpl(RepositoryService repositoryService, SecurityConfiguration securityConfiguration, ConsentService consentService) {
+    public MyUserDetailServiceImpl(RepositoryService repositoryService, SecurityConfiguration securityConfiguration) {
         this.repositoryService = repositoryService;
         this.securityConfiguration = securityConfiguration;
-        this.consentService = consentService;
     }
 
 
@@ -60,22 +57,16 @@ public class MyUserDetailServiceImpl implements MyUserDetailService {
 
     public MyUser saveUser(RegisterRequest request) throws Exception {
 
-        try {
-            String encodedPassword = securityConfiguration.passwordEncoder().encode(request.password());
-            UserConsent userConsent = consentService.consentToTermsAndAgreement(request);
+            MyUser newUser = new MyUser(
+                    null,
+                    request.username(),
+                    securityConfiguration.passwordEncoder().encode(request.password()),
+                    null,
+                    consentToTermsAndAgreement(request));
 
-            MyUser newUser = new MyUser(null, request.username(), encodedPassword, null, userConsent);
             LOG.info("New user saved with email address: {}", request.username());
+
             return repositoryService.saveUser(newUser);
-
-        } catch (DuplicateKeyException e) {
-            LOG.error("Duplicate key exception", e);
-            throw e;
-        } catch (Exception ex) {
-            LOG.error("An error occurred", ex);
-            throw ex;
-        }
-
     }
 
     public List<MyUser> getUsers() {

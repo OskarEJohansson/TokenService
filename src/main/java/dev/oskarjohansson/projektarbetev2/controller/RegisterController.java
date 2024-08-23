@@ -21,7 +21,6 @@ import org.springframework.web.bind.annotation.RestController;
 @Validated
 public class RegisterController {
 
-    private static final Logger LOG = LoggerFactory.getLogger(RegisterController.class);
     private final MyUserDetailService myUserDetailService;
 
     public RegisterController(MyUserDetailService myUserDetailService) {
@@ -29,16 +28,8 @@ public class RegisterController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<?> registerUser(@RequestBody @Validated RegisterRequest request) {
-        try {
+    public ResponseEntity<?> registerUser(@RequestBody @Validated RegisterRequest request) throws Exception {
             MyUser response = myUserDetailService.saveUser(request);
             return ResponseEntity.ok(response);
-        } catch (DuplicateKeyException e) {
-            LOG.error("Duplicate key exception", e);
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
-        } catch (Exception ex) {
-            LOG.error("An error occurred", ex);
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
-        }
     }
 }

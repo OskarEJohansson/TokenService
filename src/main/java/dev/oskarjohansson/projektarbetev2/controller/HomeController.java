@@ -50,16 +50,8 @@ public class HomeController {
     }
 
     @GetMapping("/users")
-    public List<MyUser> getUsers(){
-
-        try {
+    public List<MyUser> getUsers() throws IllegalArgumentException{
             return userDetailService.getUsers();
-        }
-        catch (IllegalArgumentException e){
-            e.getStackTrace();
-
-            return null;
-        }
     }
 
 
