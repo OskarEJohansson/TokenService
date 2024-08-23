@@ -7,6 +7,7 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -43,5 +44,11 @@ public class GlobalExceptionHandling {
     public ResponseEntity<String> handleIllegalArgumentException(IllegalArgumentException ex){
         LOG.error("IllegalArgumentException error, stack trace: {}", ex.getStackTrace().toString());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Illegal argument exception error: " + ex.getMessage());
+    }
+
+    @ExceptionHandler
+    public ResponseEntity<String> handleUsernameNotFoundException(UsernameNotFoundException ex){
+        LOG.error("UsernameNotFoundException error, stack trace: {}", ex.getStackTrace().toString());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Username not found: " +  ex.getMessage());
     }
 }
