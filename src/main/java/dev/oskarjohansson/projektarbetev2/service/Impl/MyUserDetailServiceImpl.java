@@ -15,7 +15,7 @@ import java.util.Optional;
 
 
 @Service
-public class MyUserDetailServiceImpl extends MyUserDetailServiceUtilityImpl implements MyUserDetailService {
+public class MyUserDetailServiceImpl extends MyUserDetailServiceUtility implements MyUserDetailService {
 
     private final static Logger LOG = LoggerFactory.getLogger(dev.oskarjohansson.projektarbetev2.service.Impl.MyUserDetailServiceImpl.class);
     private final RepositoryService repositoryService;
@@ -23,7 +23,6 @@ public class MyUserDetailServiceImpl extends MyUserDetailServiceUtilityImpl impl
     public MyUserDetailServiceImpl(RepositoryService repositoryService, SecurityConfiguration securityConfiguration) {
         super(securityConfiguration);
         this.repositoryService = repositoryService;
-
     }
 
     @Override
@@ -34,7 +33,10 @@ public class MyUserDetailServiceImpl extends MyUserDetailServiceUtilityImpl impl
 
     public MyUser saveUser(RegisterRequest request) throws Exception {
         LOG.info("New user saved with email address: {}", request.username());
-        return repositoryService.saveUser(createNewUser(request));
+        return repositoryService
+                .saveUser(
+                        createNewUser(request)
+                );
     }
 
     public List<MyUser> getUsers() {

@@ -16,12 +16,12 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import java.time.Instant;
 import java.util.Optional;
 
-public abstract class MyUserDetailServiceUtilityImpl implements ConsentService, UserHandling {
+public abstract class MyUserDetailServiceUtility implements ConsentService, UserHandling {
 
-    private final static Logger LOG = LoggerFactory.getLogger(dev.oskarjohansson.projektarbetev2.service.Impl.MyUserDetailServiceUtilityImpl.class);
+    private final static Logger LOG = LoggerFactory.getLogger(MyUserDetailServiceUtility.class);
     private final SecurityConfiguration securityConfiguration;
 
-    protected MyUserDetailServiceUtilityImpl(SecurityConfiguration securityConfiguration) {
+    protected MyUserDetailServiceUtility(SecurityConfiguration securityConfiguration) {
         this.securityConfiguration = securityConfiguration;
     }
 
@@ -51,7 +51,7 @@ public abstract class MyUserDetailServiceUtilityImpl implements ConsentService, 
     }
 
     @Override
-    public UserDetails createUserDetailsAndGrantAuthority(Optional<MyUser> user) {
+    public UserDetails createUserDetailsAndGrantAuthority(Optional<MyUser> user) throws UsernameNotFoundException {
         var userObj = user.get();
         return User.builder()
                 .username(userObj.username())

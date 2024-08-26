@@ -5,6 +5,7 @@ import dev.oskarjohansson.projektarbetev2.service.MyUserDetailService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureWebMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
@@ -30,8 +31,6 @@ class HomeControllerTest {
     private MyUserDetailService myUserDetailService;
     @MockBean
     private JwtEncoder jwtEncoder;
-    @MockBean
-    private JwtClaimsSet jwtClaimsSet;
     @MockBean
     private JwtDecoder jwtDecoder;
 
