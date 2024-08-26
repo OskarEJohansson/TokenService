@@ -12,9 +12,4 @@ import java.util.List;
 public interface MyUserDetailService extends UserDetailsService {
 
     UserDetails loadUserByUsername(String username) throws UsernameNotFoundException;
-
-    MyUser saveUser(RegisterRequest request) throws Exception;
-
-    List<MyUser> getUsers();
-
 }

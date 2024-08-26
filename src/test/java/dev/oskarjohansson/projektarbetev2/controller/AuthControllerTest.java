@@ -24,6 +24,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @WebMvcTest(TokenService.class)
 @Import(SecurityException.class)
+@AutoConfigureWebMvc
 class AuthControllerTest {
 
     @Autowired
@@ -45,16 +46,14 @@ class AuthControllerTest {
     }
 
     @Test
-    @WithMockUser(username = "USER", password = "1234")
     void testAccessTokenWithCredentials() throws Exception {
-        String jsonRequest = "{\"username\":\"USER\", \"password\":\"1234\"}";
+        String jsonRequest = "{\"username\":\"ADMIN\", \"password\":\"123456\"}";
 
         MvcResult response = mvc.perform(post("/token")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(jsonRequest))
                 .andExpect(status().isOk()).andReturn();
 
-        System.out.println(response.getResponse().getContentAsString());
         Assertions.assertNotNull(response.getResponse().getContentAsString());
     }
 }

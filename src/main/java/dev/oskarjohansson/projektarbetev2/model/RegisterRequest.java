@@ -6,12 +6,12 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
 
-public record RegisterRequest(@NotBlank @Size(min = 4, max = 20, message = "Username must be between 4 and 20 characters") String username,@Size(min = 6, max= 30, message = "Password must be between 6 and 30 characters") @NotBlank String password, Roles role, @NotNull Boolean consent) {
+public record RegisterRequest(@NotBlank @Size(min = 4, max = 20, message = "Username must be between 4 and 20 characters") String username,@Size(min = 6, max= 30, message = "Password must be between 6 and 30 characters") @NotBlank String password, RoleType role, @NotNull Boolean consent) {
 
     public static class Builder{
         private String userName;
         private String password;
-        private Roles role;
+        private RoleType role;
         private Boolean consent;
 
 
@@ -25,7 +25,7 @@ public record RegisterRequest(@NotBlank @Size(min = 4, max = 20, message = "User
             return this;
         }
 
-        public Builder role(Roles role){
+        public Builder role(RoleType role){
             this.role = role;
             return this;
         }

@@ -9,5 +9,4 @@ import java.util.Optional;
 public interface UserHandling {
     UserDetails createUserDetailsAndGrantAuthority(Optional<MyUser> user);
 
-    MyUser createNewUser(RegisterRequest request);
 }
