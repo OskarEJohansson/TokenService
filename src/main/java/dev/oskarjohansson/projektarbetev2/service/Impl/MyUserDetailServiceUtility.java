@@ -8,7 +8,6 @@ import dev.oskarjohansson.projektarbetev2.service.ConsentService;
 import dev.oskarjohansson.projektarbetev2.service.UserHandling;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -56,7 +55,7 @@ public abstract class MyUserDetailServiceUtility implements ConsentService, User
         return User.builder()
                 .username(userObj.username())
                 .password(userObj.password())
-                .roles(String.valueOf(new SimpleGrantedAuthority(userObj.role().getAuthority())))
+                .authorities(userObj.role())
                 .build();
     }
 
@@ -65,7 +64,7 @@ public abstract class MyUserDetailServiceUtility implements ConsentService, User
         return new MyUser(null,
                 request.username(),
                 securityConfiguration.passwordEncoder().encode(request.password()),
-                null,
+                request.role(),
                 consentToTermsAndAgreement(request)
         );
     }

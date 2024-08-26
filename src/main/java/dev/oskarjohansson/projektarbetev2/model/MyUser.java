@@ -13,13 +13,13 @@ import org.springframework.data.mongodb.core.mapping.MongoId;
 public record MyUser(@MongoId String id,
                      @NotBlank(message = "Username must not be empty") @Size(min = 4, max = 20, message = "Username must be between 4 and 20 characters") @Indexed(unique = true) String username,
                      @NotBlank(message = "Password must not be blank") @Size(min = 6, max = 30, message = "Password must be between 6 and 30 characters") String password,
-                     Roles role, UserConsent userConsent) {
+                     RoleType role, UserConsent userConsent) {
 
     public static class Builder {
         private String id;
         private String userName;
         private String password;
-        private Roles role;
+        private RoleType role;
         private UserConsent userConsent;
 
         public Builder id(String id) {
@@ -37,7 +37,7 @@ public record MyUser(@MongoId String id,
             return this;
         }
 
-        public Builder role(Roles role) {
+        public Builder role(RoleType role) {
             this.role = role;
             return this;
         }
