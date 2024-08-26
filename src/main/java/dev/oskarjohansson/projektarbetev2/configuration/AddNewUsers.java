@@ -1,14 +1,9 @@
 //package dev.oskarjohansson.projektarbetev2.configuration;
 //
-//import dev.oskarjohansson.projektarbetev2.model.MyUser;
+//import dev.oskarjohansson.projektarbetev2.model.RegisterRequest;
 //import dev.oskarjohansson.projektarbetev2.model.Roles;
 //import dev.oskarjohansson.projektarbetev2.service.MyUserDetailService;
 //import jakarta.annotation.PostConstruct;
-//import org.springframework.context.annotation.Bean;
-//import org.springframework.security.access.prepost.PreAuthorize;
-//import org.springframework.security.access.prepost.PreFilter;
-//import org.springframework.security.core.userdetails.User;
-//import org.springframework.security.core.userdetails.UserDetails;
 //import org.springframework.stereotype.Component;
 //
 //@Component
@@ -20,11 +15,10 @@
 //        this.myUserDetailService = myUserDetailService;
 //    }
 //
-//
 //    @PostConstruct
-//    void addTestUsers(){
+//    void addTestUsers() throws Exception {
 //
-//        MyUser admin = new MyUser(null,"ADMIN", "1234", new Roles("ADMIN"));
+//        RegisterRequest admin = new RegisterRequest("ADMIN", "123456" , new Roles("ADMIN"), true);
 //        myUserDetailService.saveUser(admin);
 //    }
 //}
