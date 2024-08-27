@@ -20,7 +20,6 @@ public class RepositoryServiceImpl implements RepositoryService {
     }
 
     public Optional<MyUser> getUserByUsername(String username) throws UsernameNotFoundException {
-        return userRepository.findByUsername(username);
-    }
+        return userRepository.findByUsername(username);}
 
 }

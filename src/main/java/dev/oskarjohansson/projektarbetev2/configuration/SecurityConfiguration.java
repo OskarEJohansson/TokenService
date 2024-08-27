@@ -60,7 +60,7 @@ public class SecurityConfiguration {
                 .addFilterAfter(new AuthenticationLoggingFilter(), UsernamePasswordAuthenticationFilter.class )
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/token").permitAll()
+                        .requestMatchers("/token-service/v1/request-token").permitAll()
                         .anyRequest().authenticated())
                 .build();
     }
@@ -74,6 +74,7 @@ public class SecurityConfiguration {
 
     @Bean
     JwtEncoder jwtEncoder(JWKSource<SecurityContext> jwks){
+
         return new NimbusJwtEncoder(jwks);
     }
 
