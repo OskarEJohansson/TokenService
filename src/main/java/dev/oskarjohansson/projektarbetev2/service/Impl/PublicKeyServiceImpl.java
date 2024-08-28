@@ -21,5 +21,4 @@ public class PublicKeyServiceImpl implements PublicServiceKey {
     public RSAPublicKey getRsaPublicKey() throws DataAccessException {
         return this.rsaPublicKey;
     }
-
 }

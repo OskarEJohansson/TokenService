@@ -35,13 +35,6 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableMethodSecurity(securedEnabled = true)
 public class SecurityConfiguration {
 
-    private RSAKey rsaKey;
-    private PublicServiceKey publicKeyService;
-
-    SecurityConfiguration(PublicServiceKey publicKeyService){
-        this.publicKeyService = publicKeyService;
-    }
-
     @Bean
     public PasswordEncoder passwordEncoder(){
         return new BCryptPasswordEncoder();
@@ -54,6 +47,28 @@ public class SecurityConfiguration {
         provider.setPasswordEncoder(passwordEncoder());
 
         return new ProviderManager(provider) ;
+    }
+
+    @Bean
+    public RSAKey generateRsaKey(){
+        return Jwks.generateRSA();
+    }
+
+    @Bean
+    public JWKSource<SecurityContext> jwksSource(RSAKey rsaKey) throws JOSEException {
+        JWKSet jwKset = new JWKSet(rsaKey);
+        return ((jwkSelector, securityContext) -> jwkSelector.select(jwKset));
+    }
+
+    @Bean
+    JwtEncoder jwtEncoder(JWKSource<SecurityContext> jwks){
+
+        return new NimbusJwtEncoder(jwks);
+    }
+
+    @Bean
+    JwtDecoder jwtDecoder(RSAKey rsaKey) throws JOSEException {
+        return NimbusJwtDecoder.withPublicKey(rsaKey.toRSAPublicKey()).build();
     }
 
     @Bean
@@ -70,26 +85,6 @@ public class SecurityConfiguration {
                         .requestMatchers("/token-service/v1/request-token", "public-key-controller/v1/public-key").permitAll()
                         .anyRequest().authenticated())
                 .build();
-    }
-
-    @Bean
-    public JWKSource<SecurityContext> jwksSource() throws JOSEException {
-        rsaKey = Jwks.generateRSA();
-        publicKeyService.setRsaPublicKey(rsaKey.toRSAPublicKey());
-
-        JWKSet jwKset = new JWKSet(rsaKey);
-        return ((jwkSelector, securityContext) -> jwkSelector.select(jwKset));
-    }
-
-    @Bean
-    JwtEncoder jwtEncoder(JWKSource<SecurityContext> jwks){
-
-        return new NimbusJwtEncoder(jwks);
-    }
-
-    @Bean
-    JwtDecoder jwtDecoder() throws JOSEException {
-        return NimbusJwtDecoder.withPublicKey(rsaKey.toRSAPublicKey()).build();
     }
 
 }
