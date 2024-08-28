@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @Validated
-@RequestMapping("/token-service/")
+@RequestMapping("/token-service")
 public class AuthController {
 
     private static final Logger LOG = LoggerFactory.getLogger(AuthController.class);
@@ -31,7 +31,7 @@ public class AuthController {
         this.authenticationManager = authenticationManager;
     }
 
-    @PostMapping("v1/request-token")
+    @PostMapping("/v1/request-token")
     public ResponseEntity<?> token(@RequestBody @Valid LoginRequest userLogin) throws AuthenticationException {
 
             LOG.debug("User login credentials {}", userLogin);
