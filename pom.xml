@@ -14,7 +14,7 @@
     <name>ProjektarbeteV2</name>
     <description>ProjektarbeteV2</description>
     <properties>
-        <java.version>22</java.version>
+        <java.version>20</java.version>
     </properties>
     <dependencies>
         <dependency>
