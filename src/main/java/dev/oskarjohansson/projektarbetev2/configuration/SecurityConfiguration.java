@@ -6,7 +6,9 @@ import com.nimbusds.jose.jwk.RSAKey;
 import com.nimbusds.jose.jwk.source.JWKSource;
 import com.nimbusds.jose.proc.SecurityContext;
 import dev.oskarjohansson.projektarbetev2.configuration.CustomFilters.AuthenticationLoggingFilter;
+import dev.oskarjohansson.projektarbetev2.service.Impl.PublicKeyServiceImpl;
 import dev.oskarjohansson.projektarbetev2.service.MyUserDetailService;
+import dev.oskarjohansson.projektarbetev2.service.PublicServiceKey;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -34,6 +36,11 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfiguration {
 
     private RSAKey rsaKey;
+    private PublicServiceKey publicKeyService;
+
+    SecurityConfiguration(PublicServiceKey publicKeyService){
+        this.publicKeyService = publicKeyService;
+    }
 
     @Bean
     public PasswordEncoder passwordEncoder(){
@@ -60,14 +67,16 @@ public class SecurityConfiguration {
                 .addFilterAfter(new AuthenticationLoggingFilter(), UsernamePasswordAuthenticationFilter.class )
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/token-service/v1/request-token").permitAll()
+                        .requestMatchers("/token-service/v1/request-token", "public-key-controller/v1/public-key").permitAll()
                         .anyRequest().authenticated())
                 .build();
     }
 
     @Bean
-    public JWKSource<SecurityContext> jwksSource(){
+    public JWKSource<SecurityContext> jwksSource() throws JOSEException {
         rsaKey = Jwks.generateRSA();
+        publicKeyService.setRsaPublicKey(rsaKey.toRSAPublicKey());
+
         JWKSet jwKset = new JWKSet(rsaKey);
         return ((jwkSelector, securityContext) -> jwkSelector.select(jwKset));
     }

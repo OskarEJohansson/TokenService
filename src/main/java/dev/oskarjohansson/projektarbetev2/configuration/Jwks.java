@@ -7,12 +7,9 @@ import java.util.UUID;
 
 import com.nimbusds.jose.jwk.RSAKey;
 
-
 public class Jwks {
 
-    private Jwks() {}
-
-    public static RSAKey generateRSA(){
+    public static RSAKey generateRSA() {
         KeyPair keypair = KeyGeneratorUtils.generateRsaKey();
         RSAPublicKey publicKey = (RSAPublicKey) keypair.getPublic();
         RSAPrivateKey privateKey = (RSAPrivateKey) keypair.getPrivate();

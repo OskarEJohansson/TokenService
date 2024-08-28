@@ -41,7 +41,6 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(AuthController.class)
-@ExtendWith(MockitoExtension.class)
 @Import(SecurityConfiguration.class)
 class AuthControllerTest {
 
