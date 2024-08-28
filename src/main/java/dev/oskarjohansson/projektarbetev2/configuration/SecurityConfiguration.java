@@ -60,9 +60,7 @@ public class SecurityConfiguration {
                 .addFilterAfter(new AuthenticationLoggingFilter(), UsernamePasswordAuthenticationFilter.class )
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/token", "/", "/register").permitAll()
-                        .requestMatchers("/admin").hasAuthority("SCOPE_ROLE_ADMIN")
-                        .requestMatchers("/user").hasAuthority("SCOPE_ROLE_USER")
+                        .requestMatchers("/token-service/v1/request-token").permitAll()
                         .anyRequest().authenticated())
                 .build();
     }

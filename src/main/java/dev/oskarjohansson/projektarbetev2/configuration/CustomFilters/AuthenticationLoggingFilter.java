@@ -30,7 +30,6 @@ public class AuthenticationLoggingFilter extends OncePerRequestFilter {
         }
 
 
-
         filterChain.doFilter(request,response);
 
     }
