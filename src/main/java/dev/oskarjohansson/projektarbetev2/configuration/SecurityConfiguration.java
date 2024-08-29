@@ -6,9 +6,8 @@ import com.nimbusds.jose.jwk.RSAKey;
 import com.nimbusds.jose.jwk.source.JWKSource;
 import com.nimbusds.jose.proc.SecurityContext;
 import dev.oskarjohansson.projektarbetev2.configuration.CustomFilters.AuthenticationLoggingFilter;
-import dev.oskarjohansson.projektarbetev2.service.Impl.PublicKeyServiceImpl;
 import dev.oskarjohansson.projektarbetev2.service.MyUserDetailService;
-import dev.oskarjohansson.projektarbetev2.service.PublicServiceKey;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -50,6 +49,7 @@ public class SecurityConfiguration {
     }
 
     @Bean
+    @Qualifier(value = "customRSAKey")
     public RSAKey generateRsaKey(){
         return Jwks.generateRSA();
     }

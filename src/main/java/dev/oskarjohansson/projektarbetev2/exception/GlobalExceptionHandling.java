@@ -13,6 +13,8 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.client.HttpServerErrorException;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -43,11 +45,11 @@ public class GlobalExceptionHandling {
     @ExceptionHandler
     public ResponseEntity<String> handleDataAccessException(DataAccessException ex){
         LOG.error("DataAccessException error, stack trace: {}", ex.getStackTrace().toString());
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Database error: " + ex.getMessage());
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Data Access error: " + ex.getMessage());
     }
 
     @ExceptionHandler
-    public ResponseEntity<String> handleGeneralException(Exception ex){
+    public ResponseEntity<String> handleGeneralException(HttpServerErrorException.InternalServerError ex){
         LOG.error("GeneralException error, stack trace: {}", ex.getStackTrace().toString());
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An unexpected error occurred" + ex.getMessage());
     }
